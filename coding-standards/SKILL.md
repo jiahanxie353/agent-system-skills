@@ -1,11 +1,11 @@
 ---
 name: coding-standards
-description: Coding conventions for naming, readability, immutability, and code-quality review.
+description: Language-neutral coding conventions for naming, readability, immutability, testing, and code-quality review.
 ---
 
 # Coding Standards & Best Practices
 
-Coding conventions applicable across projects.
+Coding conventions applicable across projects and languages. Use this skill for shared code-quality expectations first, then load the relevant language-specific reference when the task involves a concrete implementation language.
 
 ## When to Activate
 
@@ -15,6 +15,7 @@ Coding conventions applicable across projects.
 - Enforcing naming, formatting, or structural consistency
 - Setting up linting, formatting, or type-checking rules
 - Onboarding new contributors to coding conventions
+- Working across multiple implementation languages
 
 ## Scope Boundaries
 
@@ -23,20 +24,43 @@ Activate this skill for:
 - immutability defaults
 - readability, KISS, DRY, and YAGNI enforcement
 - error-handling expectations and code-smell review
+- testing expectations and maintainability review
 - general code-quality review across the agent system
 
 Do not use this skill as the primary source for:
 - agent-system design decisions
 - domain-specific framework guidance when a narrower rule already exists
+- language details when a language-specific reference in this skill gives a more precise rule
 
-## Code Quality Principles
+## How to Apply
+
+1. Start from the shared principles in this file.
+2. Identify the language or languages in scope.
+3. Load the matching language-specific reference files before giving detailed implementation or review guidance.
+4. If language-specific rules conflict with generic preferences, follow the idioms and safety model of the implementation language.
+
+## Language References
+
+### Python
+
+- `python/naming_convention.md` for Python naming rules.
+- `python/comments_docstrings.md` for Python comments and docstring rules.
+- `python/python_patterns.md` for Python implementation patterns, including type hints, data modeling, immutability, error handling, imports, comprehensions, context managers, package organization, and common anti-patterns.
+
+### Rust
+
+- `rust/patterns.md` for Rust ownership, error handling, traits, generics, concurrency, crate structure, and idiomatic implementation patterns.
+- `rust/testing.md` for Rust unit tests, integration tests, async testing, property-based testing, mocking, coverage, and TDD workflow.
+
+## Shared Principles
 
 ### 1. Readability First
 
 - Code is read more than written
-- Clear variable and function names
+- Clear variable, function, type, and module names
+- No magic numbers: use named constants for non-obvious numbers and limits
 - Self-documenting code preferred over comments
-- Consistent formatting
+- Consistent formatting and organization
 
 ### 2. KISS (Keep It Simple, Stupid)
 
@@ -59,17 +83,26 @@ Do not use this skill as the primary source for:
 - Add complexity only when required
 - Start simple, refactor when needed
 
-## Naming Conventions
+### 5. Explicit Error Handling
 
-Use `naming_convention.md` as the detailed source of truth for Python naming rules.
+- Make failure modes visible at API boundaries
+- Preserve context when propagating errors
+- Avoid silent fallbacks unless the behavior is deliberate and documented
+- Do not hide correctness failures behind broad exception or error swallowing
 
-## Comments & Documentation
+### 6. Immutability by Default
 
-Follow `comments_docstrings.md` for Python comments and docstring rules.
+- Prefer immutable values and narrow mutation scopes
+- Make ownership and lifecycle obvious
+- Avoid shared mutable state unless it is necessary and controlled
+- Keep side effects localized
 
-## Python Patterns
+### 7. Testable Design
 
-Follow `python_patterns.md` for Python-specific implementation patterns, including type hints, data modeling, immutability, error handling, imports, comprehensions, context managers, package organization, and common anti-patterns.
+- Keep behavior easy to exercise with focused tests
+- Test public behavior and important edge cases
+- Use dependency boundaries that allow isolation without excessive mocking
+- Add tests proportional to risk and blast radius
 
 ## Remember
 
